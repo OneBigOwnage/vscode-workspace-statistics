@@ -1,6 +1,6 @@
 {
 	"name": "workspace-statistics",
-	"displayName": "workspace-statistics",
+	"displayName": "Workspace statistics",
 	"description": "Provides code statistics about your workspace.",
 	"version": "0.0.1",
 	"engines": {
@@ -10,7 +10,8 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.show-workspace-statistics"
+		"onCommand:extension.show-workspace-statistics",
+		"onCommand:extension.show-file-statistics"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -18,6 +19,9 @@
 			{
 				"command": "extension.show-workspace-statistics",
 				"title": "Show workspace statistics"
+			}, {
+				"command": "extension.show-file-statistics",
+				"title": "Show file statistics"
 			}
 		]
 	},
