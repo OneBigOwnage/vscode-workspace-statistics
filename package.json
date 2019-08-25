@@ -10,8 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:workspace-statistics.show-workspace-statistics",
-		"onCommand:workspace-statistics.show-file-statistics"
+		"onCommand:workspace-statistics.show-workspace-statistics"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -19,9 +18,6 @@
 			{
 				"command": "workspace-statistics.show-workspace-statistics",
 				"title": "Show workspace statistics"
-			}, {
-				"command": "workspace-statistics.show-file-statistics",
-				"title": "Show file statistics"
 			}
 		]
 	},
