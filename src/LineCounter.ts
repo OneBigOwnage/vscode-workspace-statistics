@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
 import * as fs from 'fs';
 import FileInfo from './FileInfo';
 
@@ -11,38 +10,34 @@ export default class LineCounter {
         this.vsCodeConfig = vscode.workspace.getConfiguration('workspace-statistics');
     }
 
-    public countCurrentFile(): number {
-        if (!this.hasCurrentFile()) {
-            vscode.window.showWarningMessage('There is no active file to analyze.');
-            return -1;
-        }
-
-        let editorContent = (<vscode.TextEditor>vscode.window.activeTextEditor).document.getText();
-
-
-        return editorContent.split('\n').length;
-    }
-
-    public async countWorkspaceFiles(): Promise<Array<FileInfo> | undefined> {
+    public async getWorkspaceFileInfos(): Promise<Array<FileInfo>> {
         if (!vscode.workspace.rootPath) {
             vscode.window.showWarningMessage('There is no open workspace!');
-            return;
+            return [];
         }
+
+        const sortDesc = (a: FileInfo, b: FileInfo) => {
+            if (a.totalLines() < b.totalLines()) {
+                return 1;
+            }
+
+            if (a.totalLines() > b.totalLines()) {
+                return -1;
+            }
+
+            return 0;
+        };
 
         return (await vscode.workspace.findFiles(this.getIncludes(), this.getExcludes()))
             .map((file: vscode.Uri) => {
                 const fileContent: string = fs.readFileSync(file.fsPath, { encoding: 'UTF-8' });
 
                 return new FileInfo(file.fsPath, fileContent);
-            }).filter(fileInfo => !fileInfo.isBinary());
-    }
-
-    private hasCurrentFile() {
-        return vscode.window.activeTextEditor !== undefined;
+            }).filter(fileInfo => !fileInfo.isBinary()).sort(sortDesc);
     }
 
     private getIncludes(): string {
-        const defaultIncludes: Array<string> = ['*.*'];
+        const defaultIncludes: Array<string> = ['**/*.*'];
 
         return ['{', this.vsCodeConfig.get('includes', defaultIncludes).toString(), '}'].join('');
     }
