@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import FileInfo from './FileInfo';
 
 export default class LineCounter {
 
@@ -22,15 +23,18 @@ export default class LineCounter {
         return editorContent.split('\n').length;
     }
 
-    public async countWorkspaceFiles(): Promise<number> {
+    public async countWorkspaceFiles(): Promise<Array<FileInfo> | undefined> {
         if (!vscode.workspace.rootPath) {
             vscode.window.showWarningMessage('There is no open workspace!');
-            return -1;
+            return;
         }
 
         return (await vscode.workspace.findFiles(this.getIncludes(), this.getExcludes()))
-            .map((file: vscode.Uri) => fs.readFileSync(file.fsPath, { encoding: 'UTF-8' }).split('\n').length)
-            .reduce((carry, current) => carry + current, 0);
+            .map((file: vscode.Uri) => {
+                const fileContent: string = fs.readFileSync(file.fsPath, { encoding: 'UTF-8' });
+
+                return new FileInfo(file.fsPath, fileContent);
+            }).filter(fileInfo => !fileInfo.isBinary());
     }
 
     private hasCurrentFile() {
