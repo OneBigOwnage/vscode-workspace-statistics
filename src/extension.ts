@@ -8,13 +8,13 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const lineCounter = new LineCounter();
 
-	let showWorkspaceStatistics = vscode.commands.registerCommand('extension.show-workspace-statistics', async () => {
+	let showWorkspaceStatistics = vscode.commands.registerCommand('workspace-statistics.show-workspace-statistics', async () => {
 		let message = `The current workspace has ${await lineCounter.countWorkspaceFiles()} lines total.`;
 
 		vscode.window.showInformationMessage(message);
 	});
 
-	let showCurrentFileStatistics = vscode.commands.registerCommand('extension.show-file-statistics', async () => {
+	let showCurrentFileStatistics = vscode.commands.registerCommand('workspace-statistics.show-file-statistics', async () => {
 		let message = `The current file has ${await lineCounter.countCurrentFile()} lines total.`;
 
 		vscode.window.showInformationMessage(message);

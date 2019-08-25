@@ -10,17 +10,17 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.show-workspace-statistics",
-		"onCommand:extension.show-file-statistics"
+		"onCommand:workspace-statistics.show-workspace-statistics",
+		"onCommand:workspace-statistics.show-file-statistics"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.show-workspace-statistics",
+				"command": "workspace-statistics.show-workspace-statistics",
 				"title": "Show workspace statistics"
 			}, {
-				"command": "extension.show-file-statistics",
+				"command": "workspace-statistics.show-file-statistics",
 				"title": "Show file statistics"
 			}
 		]
